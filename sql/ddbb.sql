@@ -1,4 +1,7 @@
 -- Crear la tabla de Usuarios
+CREATE DATABASE db_chat DEFAULT CHARACTER SET utf8mb4;
+USE db_chat;
+
 CREATE TABLE Usuarios (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
