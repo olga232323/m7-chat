@@ -1,3 +1,9 @@
+<?php
+    if (!filter_has_var(INPUT_POST, 'inicio')) {  // No permite acceder a chat_index.php sin haberse logueado
+        header('Location: '.'./index.php');
+        exit();
+    } else {
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -123,3 +129,6 @@
 </body>
 
 </html>
+<?php
+  }
+?>
