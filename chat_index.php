@@ -29,28 +29,52 @@
 
                   <div class="p-3">
                     <!-- Barra de búsqueda -->
-                    <div class="input-group rounded mb-3">
-                      <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                        aria-describedby="search-addon" />
-                      <span class="input-group-text border-0" id="search-addon">
-                        <i class="fas fa-search"></i>
-                      </span>
-                    </div>
+                    <!-- Busqueda de usuario va a validar en busqueda_usuarios.php-->
+                    <form action="busqueda_usuarios.php" method="POST">
+                      <div class="input-group rounded mb-3">
+                        <input type="search" class="form-control rounded" name="busqueda_realizada"
+                          id="busqueda_realizada" placeholder="Busqueda" aria-label="Busqueda"
+                          aria-describedby="search-addon" />
+                        <span class="input-group-text border-0" id="search-addon">
+                          <input class="form-control rounded" type="submit" name="buscar" value="Buscar">
+                        </span>
+                      </div>
+                    </form>
                     <!-- Amistades -->
                     <div data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
                       <ul class="list-unstyled mb-0">
-                        <li class="p-2">
-                          <a href="#!" class="d-flex justify-content-between">
-                            <div class="d-flex flex-row">
-                              <div>
-                                <span class="badge bg-success badge-dot"></span>
-                              </div>
-                              <div class="pt-1">
-                                <p class="fw-bold mb-0">Ben Smith</p>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
+                        <!-- Buscar el chat con el usuario seleccionado -->
+                        <?php
+                        include_once("./conexiondb.php");
+                        // $user_id_1 = $_POST['username'];
+                        $user_id_1 = 1;
+                        $sqlAmistades = "SELECT U.nombre_real, U.user_id FROM Usuarios U JOIN Amistades A ON U.user_id = A.user_id_2 
+                            WHERE A.user_id_1 = ? AND A.estado_solicitud = 'aceptada';";
+                        $stmtTablaAmistades = mysqli_stmt_init($conn);
+                        mysqli_stmt_prepare($stmtTablaAmistades, $sqlAmistades);
+                        mysqli_stmt_bind_param($stmtTablaAmistades, "i", $user_id_1); // user_id_1 sustituye el interrogante que hemos puesto en la plantilla
+                        mysqli_stmt_execute($stmtTablaAmistades);
+                        $resultado = mysqli_stmt_get_result($stmtTablaAmistades);
+
+                        if (mysqli_num_rows($resultado) == 0) {
+                          echo "No tienes amigos agregados.";
+                          exit();
+                        }
+
+                        foreach ($resultado as $fila) {
+                          $nombre_amigo = $fila['nombre_real'];
+                          $id_amigo = $fila['user_id'];
+                          echo "<li class='p-2'>
+                              <a href='buscar_chat_usuario.php' id='" . $id_amigo . "' class='d-flex justify-content-between'>
+                                <div class='d-flex flex-row'>
+                                  <div class='pt-1'>
+                                    <p class='fw-bold mb-0'>" . $nombre_amigo . "</p>
+                                  </div>
+                                </div>
+                              </a>
+                            </li>";
+                        }
+                        ?>
                       </ul>
                     </div>
 
@@ -76,7 +100,7 @@
                       </div>
                     </div>
                   </div>
-                <!-- Barra enviar mensaje -->
+                  <!-- Barra enviar mensaje -->
                   <div class="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
                     <input type="text" class="form-control form-control-lg" id="exampleFormControlInput2"
                       placeholder="Type message">
