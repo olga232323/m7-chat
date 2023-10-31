@@ -14,7 +14,7 @@ CREATE TABLE Amistades (
     friendship_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id_1 INT NOT NULL,
     user_id_2 INT NOT NULL,
-    estado_solicitud ENUM('pendiente', 'aceptada', 'rechazada') NOT NULL,
+    estado_solicitud ENUM('pendiente', 'aceptada') NOT NULL,
     FOREIGN KEY (user_id_1) REFERENCES Usuarios(user_id),
     FOREIGN KEY (user_id_2) REFERENCES Usuarios(user_id)
 );
