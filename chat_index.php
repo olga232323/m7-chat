@@ -1,6 +1,6 @@
 <?php
     if (!filter_has_var(INPUT_POST, 'inicio')) {  // No permite acceder a chat_index.php sin haberse logueado
-        header('Location: '.'./index.php');
+        header('Location: '.'./test/login.php');
         exit();
     } else {
 ?>
@@ -51,41 +51,15 @@
                       <ul class="list-unstyled mb-0">
                         <!-- Buscar el chat con el usuario seleccionado -->
                         <?php
-                        include_once("./conexiondb.php");
-                        // $user_id_1 = $_POST['username'];
-                        $user_id_1 = 1;
-                        $sqlAmistades = "SELECT U.nombre_real, U.user_id FROM Usuarios U JOIN Amistades A ON U.user_id = A.user_id_2 
-                            WHERE A.user_id_1 = ? AND A.estado_solicitud = 'aceptada';";
-                        $stmtTablaAmistades = mysqli_stmt_init($conn);
-                        mysqli_stmt_prepare($stmtTablaAmistades, $sqlAmistades);
-                        mysqli_stmt_bind_param($stmtTablaAmistades, "i", $user_id_1); // user_id_1 sustituye el interrogante que hemos puesto en la plantilla
-                        mysqli_stmt_execute($stmtTablaAmistades);
-                        $resultado = mysqli_stmt_get_result($stmtTablaAmistades);
+                          if (!isset($_SESSION['busqueda_realizada'])) {
 
-                        if (mysqli_num_rows($resultado) == 0) {
-                          echo "No tienes amigos agregados.";
-                          exit();
-                        }
-
-                        foreach ($resultado as $fila) {
-                          $nombre_amigo = $fila['nombre_real'];
-                          $id_amigo = $fila['user_id'];
-                          echo "<li class='p-2'>
-                              <a href='buscar_chat_usuario.php' id='" . $id_amigo . "' class='d-flex justify-content-between'>
-                                <div class='d-flex flex-row'>
-                                  <div class='pt-1'>
-                                    <p class='fw-bold mb-0'>" . $nombre_amigo . "</p>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>";
-                        }
+                          }
+                          // Recibimos el listado de amigos de listado_amigos.php
+                          include_once("./listado_amigos.php");
                         ?>
                       </ul>
                     </div>
-
                   </div>
-
                 </div>
                 <!-- Chat general -->
                 <div class="col-md-6 col-lg-7 col-xl-8">
@@ -114,16 +88,12 @@
                     <a class="ms-3 text-muted" href="#!"><i class="fas fa-smile"></i></a>
                     <a class="ms-3" href="#!"><i class="fas fa-paper-plane"></i></a>
                   </div>
-
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
   </section>
 </body>
