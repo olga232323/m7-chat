@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['loginCorrecto'])) {
+if (!isset($_SESSION['loginOk'])) {
   header('Location: '.'./inc/cerrar_sesion.php');
   exit();
 } else {
