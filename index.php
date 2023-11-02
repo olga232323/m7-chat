@@ -15,7 +15,7 @@
             <img class="logoarriba" src="./src/LOGO/_55770202-d102-434c-ab15-1b4f4bb9e1a3.png">
         </div>
     </header>
-    <form action="validaciones.php" method="post" id="loginForm">
+    <form action="./inc/validaciones.php" method="post" id="loginForm">
         <div class="flex" id="oscuro">
             <div class="container row">
                 <div class="column-2-izq flex">
@@ -32,11 +32,12 @@
                             <label for="contrasena">Contraseña:</label>
                             <input type="password" id="password" name="password" id="form2Example27" class="form-control" />
                             <?php if (isset($_GET['error'])) {echo " <br> <br> <p style='text-align: center;'>Usuario o contraseña incorrecto.</p>"; } ?>
-
+                            <?php if (isset($_GET['emptyUsr'])) {echo " <br> <br> <p style='text-align: center;'>No has ingresado el usuario.</p>"; } ?>
+                            <?php if (isset($_GET['emptyPwd'])) {echo " <br> <br> <p style='text-align: center;'>No has ingresado la contrasña.</p>"; } ?>
                         </div>
                        
                         <div class="flex">
-                            <input type="submit" class="boton" value="Iniciar sesión">
+                            <input type="submit" class="boton" name="inicio" value="Iniciar sesión">
                         </div>
                         <div class="abajo">
                             <a class="link" href="./indexRegister.php">

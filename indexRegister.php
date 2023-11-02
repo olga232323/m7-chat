@@ -15,7 +15,7 @@
             <img class="logoarriba" src="./src/LOGO/_55770202-d102-434c-ab15-1b4f4bb9e1a3.png">
         </div>
     </header>
-    <form action="register.php" method="post" id="loginForm">
+    <form action="./inc/register.php" method="post" id="loginForm">
         <div class="flex" id="oscuro">
             <div class="container row">
                 <div class="column-2-izq flex">
@@ -36,7 +36,9 @@
                             <label for="contrasena">Contraseña:</label>
                             <input type="password" id="password" name="password" id="form2Example27" class="form-control" />
                                   </div>
-                                  <?php if (isset($_GET['error'])) {echo " <br> <br> <p style='text-align: center;'>Completa todos los campos para registrarte.</p>"; } ?>
+                                  <?php if (isset($_GET['emptyUsr'])) {echo " <br> <br> <p style='text-align: center;'>Introduce los datos del <strong>Usuario</strong>.</p>"; } ?>
+                                  <?php if (isset($_GET['emptyNom'])) {echo " <br> <br> <p style='text-align: center;'>Introduce los datos del <strong>Nombre y Apellido</strong>.</p>"; } ?>
+                                  <?php if (isset($_GET['emptyPwd'])) {echo " <br> <br> <p style='text-align: center;'>Introduce los datos de la <strong>contraseña</strong>.</p>"; } ?>
                                   <?php if (isset($_GET['usrex'])) {echo " <br> <br> <p style='text-align: center;'>El usuario ya existe. Introduce otro usuario.</p>"; } ?>
                                   <?php if (isset($_GET['message'])) {echo " <br> <br> <p style='text-align: center;'>¡Te has registrado correctamente!</p>"; } ?>
 
