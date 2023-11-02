@@ -1,11 +1,12 @@
 <?php
-if (!filter_has_var(INPUT_POST, 'inicio')) { // No permite acceder a listado_amigos.php sin haberse logueado
-  header('Location: ' . './test/login.php');
+session_start();
+if (!isset($_SESSION['loginOk'])) {
+  header('Location: '.'./inc/cerrar_sesion.php');
   exit();
 } else {
-  include_once("./test/conexiondb.php");
+  include_once("./inc/conexion.php");
   // SANEAR POST
-  $username = mysqli_real_escape_string($conn, $_POST['username']);
+  $username = mysqli_real_escape_string($conn, $_SESSION['username']);
   try {
     // Desactivamos la autoejecución de las consultas
     mysqli_autocommit($conn, false);
