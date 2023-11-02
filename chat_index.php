@@ -54,7 +54,7 @@ if (!isset($_SESSION['loginOk'])) {
 
                           }
                           // Recibimos el listado de amigos de listado_amigos.php
-                          include_once("./listado_amigos.php");
+                          include_once("./inc/listado_amigos.php");
                           ?>
                         </ul>
                       </div>
@@ -65,8 +65,8 @@ if (!isset($_SESSION['loginOk'])) {
                     <!-- Listado de mensajes -->
                     <div class="pt-3 pe-3" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
                         <?php
-                        // Recibimos el listado de amigos de listado_amigos.php
-                          include_once("./inc/listado_amigos.php");
+                        // Recibimos el listado de mensajes de listado_mensajes.php
+                          include_once("./inc/listado_mensajes.php");
                         ?>
                     </div>
                     <!-- Barra enviar mensaje -->
