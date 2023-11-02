@@ -1,9 +1,10 @@
 <?php
-if (!filter_has_var(INPUT_POST, 'inicio')) { // No permite acceder a chat_index.php sin haberse logueado
-  header('Location: ' . './test/login.php');
+session_start();
+if (!isset($_SESSION['loginCorrecto'])) {
+  header('Location: '.'./inc/cerrar_sesion.php');
   exit();
 } else {
-  ?>
+?>
   <!DOCTYPE html>
   <html lang="en">
 
