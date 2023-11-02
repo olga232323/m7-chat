@@ -64,20 +64,10 @@ if (!isset($_SESSION['loginCorrecto'])) {
                   <div class="col-md-6 col-lg-7 col-xl-8">
                     <!-- Listado de mensajes -->
                     <div class="pt-3 pe-3" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
-
-                      <div class="d-flex flex-row justify-content-start">
-                        <div>
-                          <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">Mensaje</p>
-                          <p class="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug 13</p>
-                        </div>
-                      </div>
-
-                      <div class="d-flex flex-row justify-content-end">
-                        <div>
-                          <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">respuesta</p>
-                          <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
-                        </div>
-                      </div>
+                        <?php
+                        // Recibimos el listado de amigos de listado_amigos.php
+                          include_once("./inc/listado_amigos.php");
+                        ?>
                     </div>
                     <!-- Barra enviar mensaje -->
                     <div class="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
