@@ -29,22 +29,26 @@ if (!isset($_SESSION['loginOk'])) {
           </div>
         </div>
       </li>";
+    } else{
+      echo "<h5>Tus Amigos:</h5>";
+      while ($fila = mysqli_fetch_assoc($resultadoConsulta)) {
+        $nombreAmistad = $fila['nombre_real'];
+        $idAmistad = $fila['user_id'];
+        echo "<li class='p-2'>
+          <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='d-flex justify-content-between text-decoration-none text-dark'>
+            <div class='d-flex flex-row'>
+              <div class='pt-1'>
+                <p class='fw-bold mb-0 text-center'>" . $nombreAmistad . "</p>
+              </div>
+            </div>
+          </a>
+        </li>
+        ";
+      }
     }
 
-    while ($fila = mysqli_fetch_assoc($resultadoConsulta)) {
-      $nombreAmistad = $fila['nombre_real'];
-      $idAmistad = $fila['user_id'];
-      echo "<li class='p-2'>
-        <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='d-flex justify-content-between text-decoration-none text-dark'>
-          <div class='d-flex flex-row'>
-            <div class='pt-1'>
-              <p class='fw-bold mb-0 text-center'>" . $nombreAmistad . "</p>
-            </div>
-          </div>
-        </a>
-      </li>
-      ";
-    }
+
+    
 
   } catch (Exception $e) {
     mysqli_rollback($conn); // Deshacemos las inserciones en el caso de que se genere alguna excepción

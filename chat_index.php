@@ -4,7 +4,7 @@ if (!isset($_SESSION['loginOk'])) {
   header('Location: ' . './inc/cerrar_sesion.php');
   exit();
 } else {
-  ?>
+?>
   <!DOCTYPE html>
   <html lang="en">
 
@@ -12,11 +12,8 @@ if (!isset($_SESSION['loginOk'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./src/LOGO/logopro-removebg-preview.png" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <title>Whatsapp 2</title>
     <link rel="stylesheet" type="text/css" href="./css/chat_style.css">
   </head>
@@ -72,25 +69,29 @@ if (!isset($_SESSION['loginOk'])) {
                               $nombreAmistad = $resultado['nombre_real'];
                               $idAmistad = $resultado['user_id'];
                               $usuarioActual = $_SESSION['user_id'];
-                           
+
                               // Verificar si son amigos o si hay una solicitud pendiente
                               if (!sonAmigos($conn, $usuarioActual, $idAmistad)) {
-                                  echo "<li class='p-2'>
-                                      <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='d-flex justify-content-between'>
-                                          <div class='d-flex flex-row'>
-                                              <div class='pt-1'>
-                                                  <p class='fw-bold mb-0'>" . $nombreAmistad . "</p>
-                                              </div>
-                                          </div>
-                                      </a>
-                                      <a class='btn d-inline-flex' href='enviar_solicitud.php?user_id_1=" . $usuarioActual . "&user_id_2=" . $idAmistad . "' style='background-color: green; color: white; padding: 0; border: none;'>
-                                                  <i class='bi bi-check' style='font-size: 1.5em;'></i> ✅
-                                              </a>
-                                  
-                                  </li>";
+                                echo "<li class='p-2'>
+                                <div class='d-flex flex-row'>
+                                  <div class='pt-1'>
+                                    <div class='row align-items-center'>
+                                      <div class='col-6 text-center'>
+                                        <p class='fw-bold text-left'>" . $nombreAmistad . "</p>
+                                      </div>
+                                      <div class='col-6 text-center'>
+                                        <a class='btn d-inline-flex text-right' href='./inc/enviar_solicitud.php?agregarAmigo&idAmigo=" . $idAmistad . "' style='background-color: white; border: none; margin-bottom: 50%;'>
+                                          ✅
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                              ";
                               } else {
-                                  echo "<li class='p-2'>
-                                      <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='d-flex justify-content-between'>
+                                echo "<li class='p-2'>
+                                      <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='text-decoration-none text-dark d-flex justify-content-between'>
                                           <div class='d-flex flex-row'>
                                               <div class='pt-1'>
                                                   <p class='fw-bold mb-0'>" . $nombreAmistad . "</p>
@@ -99,48 +100,47 @@ if (!isset($_SESSION['loginOk'])) {
                                       </a>
                                   </li>";
                               }
-                          }
+                            }
 
                             echo "</ul>";
                           } elseif (isset($_POST['buscar']) && $_POST['busqueda_realizada'] !== '') {
                             echo "<p>Usuario no encontrado</p>";
                           } elseif (isset($_POST['buscar']) && $_POST['busqueda_realizada'] == '') {
                             echo "<p>No has escrito nada.</p>";
-                          } elseif (!isset($_POST['buscar'])){ ?>
+                          } elseif (!isset($_POST['buscar'])) { ?>
                             <!-- Amistades -->
                             <div data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
                               <ul class="list-unstyled mb-0">
                                 <!-- Buscar el chat con el usuario seleccionado -->
                                 <?php
-                                 // Recibimos el listado de amigos de listado_amigos.php
+                                // Recibimos el listado de amigos de listado_amigos.php
                                 include_once("./inc/listado_amigos.php");
                                 ?>
                               </ul>
                             </div>
-                            <?php
+                          <?php
                           }
                           ?>
                         </div>
                       </div>
-                      
+
                     </div>
                   </div>
                   <!-- Chat general -->
                   <div class="col-md-6 col-lg-7 col-xl-8">
                     <!-- Listado de mensajes -->
-                    <div class="pt-3 pe-3" data-mdb-perfect-scrollbar="true"
-                      style="position: relative; height: 400px; overflow: auto;">
+                    <div class="pt-3 pe-3" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px; overflow: auto;">
                       <?php
                       // Recibimos el listado de mensajes de listado_mensajes.php
                       if (!isset($_GET['idAmigo'])) {
-                        ?>
+                      ?>
                         <div class='d-flex flex-row justify-content-center align-items-center '>
                           <div>
                             <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7;'>Selecciona una
                               persona para chatear!</p>
                           </div>
                         </div>
-                        <?php
+                      <?php
                       } else {
                         include_once("./inc/listado_mensajes.php");
                       }
@@ -167,8 +167,14 @@ if (!isset($_SESSION['loginOk'])) {
       </div>
     </section>
   </body>
+  <div class="position-absolute top-0 end-0 p-2">
+  <form action="./inc/cerrar_sesion.php">
+    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+  </form>
+</div>
+
 
   </html>
-  <?php
+<?php
 }
 ?>
