@@ -30,12 +30,6 @@ if (!filter_has_var(INPUT_POST, 'inicio')) {
             // $resultadoConsulta = mysqli_stmt_get_result($stmt);
             mysqli_stmt_close($stmt);
             // mysqli_close($conn);
-
-            if (mysqli_num_rows($resultadoConsulta) == 0) {
-                // Verificar la contraseña con Bcrypt
-                header("Location: ../index.php?error");
-                exit();
-            }
             while ($fila = mysqli_fetch_assoc($resultadoConsulta)) {
                 $userid = $fila['user_id'];
                 $hashedPassword = $fila['contraseña'];
@@ -48,6 +42,8 @@ if (!filter_has_var(INPUT_POST, 'inicio')) {
                 $_SESSION['loginOk'] = isset($_POST['loginOk']) ? $_POST['loginOk'] : "";
                 header("Location: ../chat_index.php"); // Redirección si el inicio de sesión es exitoso
                 exit();
+            }else{
+                header("Location: ../index.php?error");
             }
 
         } catch (Exception $e) {

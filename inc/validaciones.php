@@ -22,14 +22,15 @@ if (!filter_has_var(INPUT_POST, 'inicio')) {
     mysqli_stmt_fetch($stmt);
 
     // Verificar la contraseña con Bcrypt
-    // if (password_verify($password, $hashedPassword)) {
+    if (password_verify($password, $hashedPassword)) {
       // Inicio de sesión exitoso
       session_start();
-      $_SESSION["user_id"] = $userID;
-      $_SESSION["loginOk"];
+      $_SESSION['username'] = $user;
+      $_SESSION["user_id"] = $userid;
+      $_SESSION['loginOk'] = isset($_POST['loginOk']) ? $_POST['loginOk'] : "";
       header("Location: ../chat_index.php"); // Redirección si el inicio de sesión es exitoso
       exit();
-    // }
+    }
   }
   mysqli_stmt_close($stmt);
   mysqli_close($conn);

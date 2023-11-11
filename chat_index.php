@@ -33,38 +33,96 @@ if (!isset($_SESSION['loginOk'])) {
                   <div class="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
 
                     <div class="p-3">
-                      <!-- Barra de búsqueda -->
-                      <!-- Busqueda de usuario va a validar en busqueda_usuarios.php-->
+                      <!-- Barra de búsqueda --><!-- Barra de búsqueda -->
+                      <!-- Formulario de búsqueda en la misma página -->
+                      <?php
+                      include("./inc/conexion.php");
+                      include("./inc/busqueda_usuarios.php");
+
+                      $resultados = array();
+
+                      if (isset($_POST['buscar']) && $_POST['busqueda_realizada'] !== '') {
+                        $nombre = $_POST['busqueda_realizada'];
+                        $resultados = buscarUsuarios($conn, $nombre);
+                      }
+
+                      ?>
                       <form action="chat_index.php" method="POST">
                         <div class="input-group mb-3">
-                          <input type="search" class="form-control rounded" name="busqueda_realizada"
-                            id="busqueda_realizada" placeholder="Búsqueda" aria-label="Búsqueda"
-                            aria-describedby="search-addon" />
+                          <input type="search" class="form-control rounded" name="busqueda_realizada" id="busqueda_realizada" placeholder="Búsqueda" aria-label="Búsqueda" aria-describedby="search-addon" />
 
                           <div class="input-group-append">
                             <button class="btn btn-secondary" type="submit" name="buscar">Buscar</button>
                             <?php if (isset($_POST['buscar'])) { ?>
-                              <button class="btn btn-secondary" type="button"
-                                onclick="window.location.href='./chat_index.php'">
+                              <button class="btn btn-secondary" type="button" onclick="window.location.href='./chat_index.php'">
                                 &times;
                               </button>
                             <?php } ?>
                           </div>
                         </div>
                       </form>
-                      <!-- Amistades -->
-                      <div data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
-                        <ul class="list-unstyled mb-0">
-                          <!-- Buscar el chat con el usuario seleccionado -->
+                      <div>
+                        <!-- Resultados de búsqueda -->
+                        <div id="resultadosBusqueda" style="max-height: 400px; overflow-y: auto;">
                           <?php
-                          if (!isset($_SESSION['busqueda_realizada'])) {
-
+                          if (!empty($resultados)) {
+                            echo "<h5>Resultados de la búsqueda:</h5>";
+                            echo "<ul style='list-style:none'>";
+                            foreach ($resultados as $resultado) {
+                              $nombreAmistad = $resultado['nombre_real'];
+                              $idAmistad = $resultado['user_id'];
+                              $usuarioActual = $_SESSION['user_id'];
+                           
+                              // Verificar si son amigos o si hay una solicitud pendiente
+                              if (!sonAmigos($conn, $usuarioActual, $idAmistad)) {
+                                  echo "<li class='p-2'>
+                                      <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='d-flex justify-content-between'>
+                                          <div class='d-flex flex-row'>
+                                              <div class='pt-1'>
+                                                  <p class='fw-bold mb-0'>" . $nombreAmistad . "</p>
+                                              </div>
+                                          </div>
+                                      </a>
+                                      <a class='btn d-inline-flex' href='enviar_solicitud.php?user_id_1=" . $usuarioActual . "&user_id_2=" . $idAmistad . "' style='background-color: green; color: white; padding: 0; border: none;'>
+                                                  <i class='bi bi-check' style='font-size: 1.5em;'></i> ✅
+                                              </a>
+                                  
+                                  </li>";
+                              } else {
+                                  echo "<li class='p-2'>
+                                      <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='d-flex justify-content-between'>
+                                          <div class='d-flex flex-row'>
+                                              <div class='pt-1'>
+                                                  <p class='fw-bold mb-0'>" . $nombreAmistad . "</p>
+                                              </div>
+                                          </div>
+                                      </a>
+                                  </li>";
+                              }
                           }
-                          // Recibimos el listado de amigos de listado_amigos.php
-                          include_once("./inc/listado_amigos.php");
+
+                            echo "</ul>";
+                          } elseif (isset($_POST['buscar']) && $_POST['busqueda_realizada'] !== '') {
+                            echo "<p>Usuario no encontrado</p>";
+                          } elseif (isset($_POST['buscar']) && $_POST['busqueda_realizada'] == '') {
+                            echo "<p>No has escrito nada.</p>";
+                          } elseif (!isset($_POST['buscar'])){ ?>
+                            <!-- Amistades -->
+                            <div data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
+                              <ul class="list-unstyled mb-0">
+                                <!-- Buscar el chat con el usuario seleccionado -->
+                                <?php
+                                 // Recibimos el listado de amigos de listado_amigos.php
+                                include_once("./inc/listado_amigos.php");
+                                ?>
+                              </ul>
+                            </div>
+                            <?php
+                          }
                           ?>
-                        </ul>
+                        </div>
                       </div>
+                      
                     </div>
                   </div>
                   <!-- Chat general -->
