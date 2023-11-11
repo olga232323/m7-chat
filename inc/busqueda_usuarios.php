@@ -1,12 +1,20 @@
 <?php
-include("./inc/conexion.php"); // Asegúrate de incluir conexión.php
+include("./inc/conexion.php");
 
 function buscarUsuarios($conn, $nombre)
 {
-    $consulta = "SELECT * FROM usuarios WHERE username LIKE '%" . $nombre . "%'";
-    $result = mysqli_query($conn, $consulta);
+    $nombre = mysqli_real_escape_string($conn, $nombre);
+    
+    try {
+        $consulta = "SELECT user_id, nombre_real FROM usuarios WHERE username LIKE ? OR nombre_real LIKE ?";
+        $stmt = mysqli_stmt_init($conn);
+        mysqli_stmt_prepare($stmt, $consulta);
 
-    if ($result) {
+        $parametro = '%' . $nombre . '%';
+        mysqli_stmt_bind_param($stmt, "ss", $parametro, $parametro);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
         $results = array();
 
         while ($fila = mysqli_fetch_assoc($result)) {
@@ -19,14 +27,19 @@ function buscarUsuarios($conn, $nombre)
             );
         }
 
+        mysqli_stmt_close($stmt);
         return $results;
-    } else {
-        return "Error: " . mysqli_error($conn);
+
+    } catch (Exception $e) {
+        return "Error: " . $e->getMessage();
     }
 }
 
 function sonAmigos($conn, $user_id_1, $user_id_2)
 {
+    $user_id_1 = mysqli_real_escape_string($conn, $user_id_1);
+    $user_id_2 = mysqli_real_escape_string($conn, $user_id_2);
+
     $consulta = "SELECT estado_solicitud FROM Amistades
                  WHERE (user_id_1 = ? AND user_id_2 = ?) OR (user_id_1 = ? AND user_id_2 = ?)";
     $stmt = mysqli_prepare($conn, $consulta);
