@@ -18,11 +18,12 @@ if (isset($_GET['agregarAmigo'])) {
     $idAmigo = mysqli_real_escape_string($conn, $_GET['idAmigo']);
 
     try {
-        $sqlAmistades = "INSERT INTO amistades (user_id_1, user_id_2, estado_solicitud) VALUES (?, ?, 'pendiente')";
+        $sqlAmistades = "INSERT INTO Amistades (user_id_1, user_id_2, estado_solicitud)
+VALUES (?, ?, 'pendiente'), (?, ?, 'pendiente')";
         $stmtTablaAmistades = mysqli_stmt_init($conn);
         
         if (mysqli_stmt_prepare($stmtTablaAmistades, $sqlAmistades)) {
-            mysqli_stmt_bind_param($stmtTablaAmistades, "ii", $user_id, $idAmigo);
+            mysqli_stmt_bind_param($stmtTablaAmistades, "iiii", $user_id, $idAmigo, $idAmigo, $user_id);
             mysqli_stmt_execute($stmtTablaAmistades);
             mysqli_stmt_close($stmtTablaAmistades);
             

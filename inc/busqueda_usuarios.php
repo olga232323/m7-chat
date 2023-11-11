@@ -1,7 +1,8 @@
 <?php
 include("./inc/conexion.php"); // Asegúrate de incluir conexión.php
 
-function buscarUsuarios($conn, $nombre) {
+function buscarUsuarios($conn, $nombre)
+{
     $consulta = "SELECT * FROM usuarios WHERE username LIKE '%" . $nombre . "%'";
     $result = mysqli_query($conn, $consulta);
 
@@ -24,7 +25,8 @@ function buscarUsuarios($conn, $nombre) {
     }
 }
 
-function sonAmigos($conn, $user_id_1, $user_id_2) {
+function sonAmigos($conn, $user_id_1, $user_id_2)
+{
     $consulta = "SELECT estado_solicitud FROM Amistades
                  WHERE (user_id_1 = ? AND user_id_2 = ?) OR (user_id_1 = ? AND user_id_2 = ?)";
     $stmt = mysqli_prepare($conn, $consulta);
@@ -33,11 +35,13 @@ function sonAmigos($conn, $user_id_1, $user_id_2) {
     mysqli_stmt_bind_result($stmt, $estado_solicitud);
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
-    
+
     if ($estado_solicitud === 'aceptada') {
         return true; // Son amigos
+    } else if ($estado_solicitud === 'pendiente') {
+        return true; // No son amigos pero hay una solicitud pendiente
     } else {
-        return false; // No son amigos o hay una solicitud pendiente
+        return false; // No son amigos
     }
 }
 ?>
