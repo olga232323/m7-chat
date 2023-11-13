@@ -16,7 +16,7 @@ FROM Mensajes m
 JOIN Usuarios u_sender ON m.sender_id = u_sender.user_id
 JOIN Usuarios u_receiver ON m.receiver_id = u_receiver.user_id
 WHERE (m.sender_id = ? AND m.receiver_id = ?) OR (m.sender_id = ? AND m.receiver_id = ?)
-ORDER BY m.fecha_envio";
+ORDER BY m.fecha_envio DESC";
 
     $stmtTablaMensajes = mysqli_stmt_init($conn);
     $stmtTablaMensajes = mysqli_prepare($conn, $sqlMensajes);
