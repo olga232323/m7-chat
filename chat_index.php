@@ -58,6 +58,7 @@ if (!isset($_SESSION['loginOk'])) {
                           </div>
                         </div>
                       </form>
+                      <button class="btn btn-primary" onclick="window.location.href='./solicitudes_amistad.php'">Solicitudes amistad</button>
                       <div>
                         <!-- Resultados de búsqueda -->
                         <div id="resultadosBusqueda" style="max-height: 400px; overflow-y: auto;">
