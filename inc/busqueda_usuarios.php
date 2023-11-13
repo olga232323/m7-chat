@@ -4,14 +4,15 @@ include("./inc/conexion.php");
 function buscarUsuarios($conn, $nombre)
 {
     $nombre = mysqli_real_escape_string($conn, $nombre);
+    $userID = mysqli_real_escape_string($conn, $_SESSION['user_id']);
     
     try {
-        $consulta = "SELECT user_id, nombre_real FROM usuarios WHERE username LIKE ? OR nombre_real LIKE ?";
+        $consulta = "SELECT user_id, nombre_real FROM usuarios WHERE (username LIKE ? OR nombre_real LIKE ?) AND NOT user_id = ?";
         $stmt = mysqli_stmt_init($conn);
         mysqli_stmt_prepare($stmt, $consulta);
 
         $parametro = '%' . $nombre . '%';
-        mysqli_stmt_bind_param($stmt, "ss", $parametro, $parametro);
+        mysqli_stmt_bind_param($stmt, "ssi", $parametro, $parametro, $userID);
         mysqli_stmt_execute($stmt);
 
         $result = mysqli_stmt_get_result($stmt);
