@@ -50,6 +50,8 @@ if (!isset($_SESSION['loginOk'])) {
 
                           <div class="input-group-append">
                             <button class="btn btn-secondary" type="submit" name="buscar">Buscar</button>
+                            <a class="btn btn-secondary" onclick="window.location.href='./solicitudes_amistad.php'">+</a>
+
                             <?php if (isset($_POST['buscar'])) { ?>
                               <button class="btn btn-secondary" type="button" onclick="window.location.href='./chat_index.php'">
                                 &times;
@@ -58,7 +60,6 @@ if (!isset($_SESSION['loginOk'])) {
                           </div>
                         </div>
                       </form>
-                      <button class="btn btn-primary" onclick="window.location.href='./solicitudes_amistad.php'">Solicitudes amistad</button>
                       <div>
                         <!-- Resultados de búsqueda -->
                         <div id="resultadosBusqueda" style="max-height: 400px; overflow-y: auto;">

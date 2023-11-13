@@ -27,6 +27,13 @@ if (!isset($_SESSION['loginOk'])) {
                     <div class="card" id="chat3" style="border-radius: 15px;">
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-2">
+                                <a href="./chat_index.php" class="btn btn-secondary btn-sm float-left" >Volver Atrás</a>
+
+                                </div>
+                            </div>
+                            <div class="row">
+
                             <h1 style="text-align: center;">Solicitudes de Amistad:</h1>
 
 <?php
