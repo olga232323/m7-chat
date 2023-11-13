@@ -15,7 +15,7 @@
             <img class="logoarriba" src="./src/LOGO/_55770202-d102-434c-ab15-1b4f4bb9e1a3.png">
         </div>
     </header>
-    <form action="./inc/validaciones_prueba.php" method="post" id="loginForm">
+    <form action="./inc/validaciones.php" method="post" id="loginForm">
         <div class="flex" id="oscuro">
             <div class="container row">
                 <div class="column-2-izq flex">
