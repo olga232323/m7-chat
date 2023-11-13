@@ -50,17 +50,18 @@ try {
             </div>
           </div>";
         } else {
-            echo "<ul>";
+            echo "<ol style='margin-left: 10%;'>";
             while ($fila = mysqli_fetch_assoc($result)) {
                 $amigo_username = $fila['username_user_id_2'];
                 $friendship_id = $fila['friendship_id'];
                 $amigo_id = $fila['user_id_user_id_2'];
                 echo "<li>
                 $amigo_username
-                <a href='./inc/aceptar_solicitud.php?friendship_id=$friendship_id&amigo_id=$amigo_id'>Aceptar</a>
+                <a style='text-decoration: none; color: black;' href='./inc/aceptar_solicitud.php?friendship_id=$friendship_id&amigo_id=$amigo_id'>✅</a>
+                <a style='text-decoration: none; color: black;' href='./inc/borrar_solicitud.php?friendship_id=$friendship_id&amigo_id=$amigo_id'>❌</a>
             </li>";
             }
-            echo "</ul>";
+            echo "</ol>";
 
             mysqli_stmt_close($stmt);
         }
