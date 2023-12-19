@@ -4,7 +4,7 @@ if (!isset($_SESSION['loginOk'])) {
   exit();
 } else {
   include("./inc/conexion.php");
-  // SANEAR POST
+
   $username = $_SESSION['username'];
   $userID = $_SESSION['user_id'];
   try {
@@ -47,7 +47,6 @@ if (!isset($_SESSION['loginOk'])) {
     }
 
   } catch (PDOException $e) {
-    $conn->rollBack(); // Deshacemos las inserciones en el caso de que se genere alguna excepción
     echo "Error in the database connection" . $e->getMessage();
     $conn = null;
     die();
