@@ -18,8 +18,8 @@ if (!filter_has_var(INPUT_POST, 'inicio')) {
     } else {
         try {
             // Resto del código para validar el inicio de sesión...
-            $user = $_POST['user'];
-            $password = $_POST['password'];
+            // $user = $_POST['user'];
+            // $password = $_POST['password'];
             $query = "SELECT user_id, contraseña FROM Usuarios WHERE username = :username";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':username', $user);
