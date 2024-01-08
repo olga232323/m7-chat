@@ -14,15 +14,17 @@ if (isset($_GET['friendship_id']) && isset($_GET['amigo_id'])) {
 
     try {
         // Retrieve the second friendship_id that corresponds to the friend's user_id
-        $sql2 = "SELECT friendship_id FROM amistades WHERE (user_id_2 = :user_id_2 AND user_id_1 = :user_id_1)";
+        $sql2 = "SELECT friendship_id FROM amistades WHERE :user_id_2 AND :user_id_1";
 
         if ($stmt2 = $conn->prepare($sql2)) {
             $stmt2->bindParam(':user_id_2', $user_id);
-                        $stmt2->bindParam(':user_id_1', $amigo_id);
-            $stmtTablaMensaje->execute();
+            $stmt2->bindParam(':user_id_1', $amigo_id);
+            $stmt2->execute();
             $result = $stmt2->fetchAll();
             foreach ($result as $fila) {
                 $friendship_id2 = $fila['friendship_id'];
+                echo $friendship_id2;
+
             }
 
             if ($friendship_id2 !== null) {
