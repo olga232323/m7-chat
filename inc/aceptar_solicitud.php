@@ -14,32 +14,30 @@ if (isset($_GET['friendship_id']) && isset($_GET['amigo_id'])) {
 
     try {
         // Retrieve the second friendship_id that corresponds to the friend's user_id
-        $sql2 = "SELECT friendship_id FROM amistades WHERE (user_id_2 = ? AND user_id_1 = ?)";
+        $sql2 = "SELECT friendship_id FROM amistades WHERE (user_id_2 = :user_id AND user_id_1 = :amigo_id)";
         $stmt2 = $conn->prepare($sql2);
-
-        if (mysqli_stmt_prepare($stmt2, $sql2)) {
-            mysqli_stmt_bind_param($stmt2, "ii", $user_id, $amigo_id);
-            mysqli_stmt_execute($stmt2);
-            $result = mysqli_stmt_get_result($stmt2);
-            while ($fila = mysqli_fetch_assoc($result)) {
-                $friendship_id2 = $fila['friendship_id'];
-            }
+        $stmt2->bindParam(':user_id', $user_id);
+        $stmt2->bindParam(':amigo_id', $amigo_id);
+        $stmt2->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($result as $fila) {
+            $friendship_id2 = $fila['friendship_id'];
+        }
 
             if ($friendship_id2 !== null) {
                 // Update the rows in the 'amistades' table for both users
-                $update_sql = "UPDATE `amistades` SET `estado_solicitud`='aceptada' WHERE `friendship_id` IN (?, ?)";
-                $update_stmt = mysqli_stmt_init($conn);
-
-                if (mysqli_stmt_prepare($update_stmt, $update_sql)) {
-                    mysqli_stmt_bind_param($update_stmt, "ii", $friendship_id, $friendship_id2);
-                    mysqli_stmt_execute($update_stmt);
-                    mysqli_stmt_close($update_stmt);
-                    mysqli_close($conn);
+                $update_sql = "UPDATE `amistades` SET `estado_solicitud`='aceptada' WHERE `friendship_id` IN (:friendship_id, :friendship_id2)";
+                $update_stmt = $conn->prepare($update_sql);
+                $update_stmt->bindParam(':friendship_id', $friendship_id);
+                $update_stmt->bindParam(':friendship_id2', $friendship_id2);
+                $update_stmt->execute();
+                $update_stmt->closeCursor();
+                $conn=null;
                     header('Location: ../solicitudes_amistad.php');
                     exit();
-                }
+                
             }
-        }
+        
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         exit();
