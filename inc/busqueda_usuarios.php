@@ -9,6 +9,7 @@ function buscarUsuarios($conn, $nombre)
 
     try {
         $consulta = "SELECT user_id, nombre_real FROM usuarios WHERE (username LIKE :parametro OR nombre_real LIKE :parametro) AND user_id <> :userID";
+        // <> is equal to not qual or !=
         $stmt = $conn->prepare($consulta);
         $stmt->bindParam(':parametro', $parametro);
         $stmt->bindParam(':userID', $userID);
