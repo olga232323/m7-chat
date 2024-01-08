@@ -4,11 +4,10 @@ if (!filter_has_var(INPUT_POST, 'inicio')) {
     exit();
 } else {
     // Conexión a la base de datos
+    $user = $_POST['user'];
+    $password = $_POST['password'];
+   
     include_once("./conexion.php");
-    // Sanear post
-    $user = mysqli_real_escape_string($conn, $_POST['user']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-
     // Validaciones de usuario o pwd empty
     if (empty($user)) {
         header("Location: ../index.php?emptyUsr");
@@ -19,21 +18,18 @@ if (!filter_has_var(INPUT_POST, 'inicio')) {
     } else {
         try {
             // Resto del código para validar el inicio de sesión...
-            $query = "SELECT user_id, contraseña FROM Usuarios WHERE username = ?";
-            $stmt = mysqli_prepare($conn, $query);
-            mysqli_stmt_bind_param($stmt, "s", $user);
-            mysqli_stmt_execute($stmt);
-            $resultadoConsulta = mysqli_stmt_get_result($stmt);
-
-            // mysqli_stmt_bind_result($stmt, $userID, $hashedPassword);
-
-            // $resultadoConsulta = mysqli_stmt_get_result($stmt);
-            mysqli_stmt_close($stmt);
-            // mysqli_close($conn);
-            while ($fila = mysqli_fetch_assoc($resultadoConsulta)) {
+            // $user = $_POST['user'];
+            // $password = $_POST['password'];
+            $query = "SELECT user_id, contraseña FROM Usuarios WHERE username = :username";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':username', $user);
+            $stmt->execute();
+            $resultadoConsulta = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener todas las filas como un array asociativo
+            $stmt->closeCursor();
+            foreach ($resultadoConsulta as $fila) {
                 $userid = $fila['user_id'];
-                $hashedPassword = $fila['contraseña'];
-            }
+                $hashedPassword = $fila['contraseña']; // Verifica si 'contraseña' es el nombre correcto del campo
+                          }
             if (password_verify($password, $hashedPassword)) {
                 // Inicio de sesión exitoso
                 session_start();
@@ -43,12 +39,13 @@ if (!filter_has_var(INPUT_POST, 'inicio')) {
                 header("Location: ../chat_index.php"); // Redirección si el inicio de sesión es exitoso
                 exit();
             }else{
+                // Error en el inicio de sesión
                 header("Location: ../index.php?error");
             }
 
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             echo "Error in the database connection" . $e->getMessage();
-            mysqli_close($conn);
+            $conn = null;
             die();
         }
 

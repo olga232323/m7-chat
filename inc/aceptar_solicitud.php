@@ -9,13 +9,13 @@ if (!isset($_SESSION['loginOk'])) {
 
 if (isset($_GET['friendship_id']) && isset($_GET['amigo_id'])) {
     $user_id = $_SESSION['user_id'];
-    $friendship_id = mysqli_real_escape_string($conn, $_GET['friendship_id']);
-    $amigo_id = mysqli_real_escape_string($conn, $_GET['amigo_id']);
+    $friendship_id = $_GET['friendship_id'];
+    $amigo_id =$_GET['amigo_id'];
 
     try {
         // Retrieve the second friendship_id that corresponds to the friend's user_id
         $sql2 = "SELECT friendship_id FROM amistades WHERE (user_id_2 = ? AND user_id_1 = ?)";
-        $stmt2 = mysqli_stmt_init($conn);
+        $stmt2 = $conn->prepare($sql2);
 
         if (mysqli_stmt_prepare($stmt2, $sql2)) {
             mysqli_stmt_bind_param($stmt2, "ii", $user_id, $amigo_id);
@@ -40,9 +40,8 @@ if (isset($_GET['friendship_id']) && isset($_GET['amigo_id'])) {
                 }
             }
         }
-    } catch (Exception $e) {
-        // Handle the exception, e.g., log the error or display a message to the user
-        echo "An error occurred: " . $e->getMessage();
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
         exit();
     }
 }

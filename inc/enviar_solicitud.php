@@ -12,31 +12,33 @@ if (isset($_GET['agregarAmigo'])) {
     include("./conexion.php");
 
     // Obtén el ID del usuario actual desde la sesión
-    $user_id = mysqli_real_escape_string($conn, $_SESSION['user_id']);
+    $user_id = $_SESSION['user_id'];
 
     // Obtén el ID del usuario al que se quiere agregar como amigo (puedes obtenerlo de la forma que desees)
-    $idAmigo = mysqli_real_escape_string($conn, $_GET['idAmigo']);
+    $idAmigo =$_GET['idAmigo'];
 
     try {
         $sqlAmistades = "INSERT INTO Amistades (user_id_1, user_id_2, estado_solicitud)
-VALUES (?, ?, 'pendiente'), (?, ?, 'pendiente')";
-        $stmtTablaAmistades = mysqli_stmt_init($conn);
-        
-        if (mysqli_stmt_prepare($stmtTablaAmistades, $sqlAmistades)) {
-            mysqli_stmt_bind_param($stmtTablaAmistades, "iiii", $user_id, $idAmigo, $idAmigo, $user_id);
-            mysqli_stmt_execute($stmtTablaAmistades);
-            mysqli_stmt_close($stmtTablaAmistades);
-            
-            // Cierra la conexión a la base de datos
-            mysqli_close($conn);
+VALUES (:user_id, :idAmigo, 'pendiente'), (:idAmigo, :user_id, 'pendiente')";
+        $stmtTablaAmistades = $conn->prepare($sqlAmistades);
+        $stmtTablaAmistades->bindParam(':user_id', $user_id);
+        $stmtTablaAmistades->bindParam(':idAmigo', $idAmigo);
+        $stmtTablaAmistades->bindParam(':idAmigo', $idAmigo);
+        $stmtTablaAmistades->bindParam(':user_id', $user_id);
+
+        $stmtTablaAmistades->execute();
+        $stmtTablaAmistades->closeCursor();
+        $conn=null;
+
+
             header('Location: ../chat_index.php');
+            echo "<script>alert('Solicitud enviada correctamente.')</script>";
+
             exit();
-        } else {
-            echo "Error in the database connection";
-        }
-    } catch (Exception $e) {
+        } 
+     catch (PDOException $e) {
         echo "Error in the database connection" . $e->getMessage();
-        mysqli_close($conn);
+        $conn=null;
         die();
     }
 }
