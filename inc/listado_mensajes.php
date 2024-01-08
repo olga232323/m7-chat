@@ -14,7 +14,7 @@ if (!isset($_SESSION['loginOk'])) {
 FROM Mensajes m
 JOIN Usuarios u_sender ON m.sender_id = u_sender.user_id
 JOIN Usuarios u_receiver ON m.receiver_id = u_receiver.user_id
-WHERE (m.sender_id = :sender_id AND m.receiver_id = :receiver_id) OR (m.sender_id = :sender_id AND m.receiver_id = :receiver_id)
+WHERE (m.sender_id = :sender_id AND m.receiver_id = :receiver_id) OR (m.sender_id = :receiver_id AND m.receiver_id = :sender_id)
 ORDER BY m.fecha_envio DESC";
 
     $stmtTablaMensajes = $conn->prepare($sqlMensajes);
@@ -25,10 +25,11 @@ ORDER BY m.fecha_envio DESC";
 
     $stmtTablaMensajes->execute();
 
-    $resultadoConsulta3 = $stmtTablaMensajes->fetchAll();
+    $resultadoConsulta3 = $stmtTablaMensajes->fetchAll(PDO::FETCH_ASSOC);
+
     $stmtTablaMensajes->closeCursor();
 
-    mysqli_close($conn);
+    $conn = null;
 
     if (empty($resultadoConsulta3)) {
       echo "<div class='d-flex flex-row justify-content-center'>
