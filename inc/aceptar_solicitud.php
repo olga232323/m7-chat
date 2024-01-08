@@ -19,7 +19,7 @@ if (isset($_GET['friendship_id']) && isset($_GET['amigo_id'])) {
         $stmt2->bindParam(':user_id', $user_id);
         $stmt2->bindParam(':amigo_id', $amigo_id);
         $stmt2->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $stmt2->fetchAll(PDO::FETCH_ASSOC);
         foreach ($result as $fila) {
             $friendship_id2 = $fila['friendship_id'];
         }
