@@ -42,43 +42,38 @@ $user_id = $_SESSION['user_id'];
 
 try {
     // Consulta para obtener las solicitudes de amistad pendientes
-    $sql = "SELECT a.friendship_id, a.estado_solicitud, u.username AS username_user_id_2, u.user_id AS user_id_user_id_2 FROM amistades a INNER JOIN usuarios u ON a.user_id_2 = u.user_id WHERE a.user_id_1 = ? AND a.estado_solicitud = 'pendiente'";
-    $stmt = mysqli_stmt_init($conn);
-
-    if (mysqli_stmt_prepare($stmt, $sql)) {
-        mysqli_stmt_bind_param($stmt, "i", $user_id);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        if (mysqli_num_rows($result) == 0) {
-            echo "<div class='d-flex flex-row justify-content-center align-items-center '>
-            <div>
-              <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7;'>No tienes solicitudes de Amistad.</p>
-            </div>
-          </div>";
-        } else {
-            echo "<ol style='margin-left: 10%;'>";
-            while ($fila = mysqli_fetch_assoc($result)) {
-                $amigo_username = $fila['username_user_id_2'];
-                $friendship_id = $fila['friendship_id'];
-                $amigo_id = $fila['user_id_user_id_2'];
-                echo "<li>
-                $amigo_username
-                <a style='text-decoration: none; color: black;' href='./inc/aceptar_solicitud.php?friendship_id=$friendship_id&amigo_id=$amigo_id'>✅</a>
-                <a style='text-decoration: none; color: black;' href='./inc/borrar_solicitud.php?friendship_id=$friendship_id&amigo_id=$amigo_id'>❌</a>
-            </li>";
-            }
-            echo "</ol>";
-
-            mysqli_stmt_close($stmt);
+    $sql = "SELECT a.friendship_id, a.estado_solicitud, u.username AS username_user_id_2, u.user_id AS user_id_user_id_2 FROM amistades a INNER JOIN usuarios u ON a.user_id_2 = u.user_id WHERE a.user_id_1 = :user_id_1 AND a.estado_solicitud = 'pendiente'";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':user_id_1', $user_id);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    if (count($result) == 0) {
+        echo "<div class='d-flex flex-row justify-content-center align-items-center '>
+                <div>
+                  <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7;'>No tienes solicitudes de Amistad.</p>
+                </div>
+              </div>";
+    } else {
+        echo "<ol style='margin-left: 10%;'>";
+        foreach ($result as $fila) {
+            $amigo_username = $fila['username_user_id_2'];
+            $friendship_id = $fila['friendship_id'];
+            $amigo_id = $fila['user_id_user_id_2'];
+            echo "<li>
+                    $amigo_username
+                    <a style='text-decoration: none; color: black;' href='./inc/aceptar_solicitud.php?friendship_id=$friendship_id&amigo_id=$amigo_id'>✅</a>
+                    <a style='text-decoration: none; color: black;' href='./inc/borrar_solicitud.php?friendship_id=$friendship_id&amigo_id=$amigo_id'>❌</a>
+                </li>";
         }
+        echo "</ol>";
     }
-} catch (Exception $e) {
-    // Handle the exception, e.g., log the error or display a message to the user
-    echo "An error occurred: " . $e->getMessage();
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    die();
 }
 
-mysqli_close($conn);
+$stmt->closeCursor();
 ?>
                                 </div>
                             </div>
