@@ -47,12 +47,17 @@ function sonAmigos($conn, $user_id_1, $user_id_2)
     $stmt->bindParam(':user_id_2', $user_id_1);
     $stmt->execute();
     $estado_solicitud = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach($estado_solicitud as $estado_soli){
+        $soli =  $estado_soli['estado_solicitud'];
+
+    }
+
     $stmt->closeCursor();
 
 
-    if ($estado_solicitud === 'aceptada') {
+    if ($soli === 'aceptada') {
         return true; // Son amigos
-    } else if ($estado_solicitud === 'pendiente') {
+    } else if ($soli === 'pendiente') {
         return true; // No son amigos pero hay una solicitud pendiente
     } else {
         return false; // No son amigos
