@@ -5,31 +5,32 @@ if (!isset($_SESSION['loginOk'])) {
 } else {
   try {
     include("./inc/conexion.php");
-    // SANEAR POST
-    $username = mysqli_real_escape_string($conn, $_SESSION['username']);
-    $userID = mysqli_real_escape_string($conn, $_SESSION['user_id']);
-    $idAmigo = mysqli_real_escape_string($conn, $_GET['idAmigo']);
+    $username = $_SESSION['username'];
+    $userID = $_SESSION['user_id'];
+    $idAmigo = $_GET['idAmigo'];
 
     /* Consulta para obtener el listado de mensajes del usuario que ha ingresado con el usuario selecionado */
     $sqlMensajes = "SELECT m.*, u_sender.username as sender_username, u_receiver.username as receiver_username
 FROM Mensajes m
 JOIN Usuarios u_sender ON m.sender_id = u_sender.user_id
 JOIN Usuarios u_receiver ON m.receiver_id = u_receiver.user_id
-WHERE (m.sender_id = ? AND m.receiver_id = ?) OR (m.sender_id = ? AND m.receiver_id = ?)
+WHERE (m.sender_id = :sender_id AND m.receiver_id = :receiver_id) OR (m.sender_id = :sender_id AND m.receiver_id = :receiver_id)
 ORDER BY m.fecha_envio DESC";
 
-    $stmtTablaMensajes = mysqli_stmt_init($conn);
-    $stmtTablaMensajes = mysqli_prepare($conn, $sqlMensajes);
-    mysqli_stmt_bind_param($stmtTablaMensajes, "iiii", $userID, $idAmigo, $idAmigo, $userID);
-    mysqli_stmt_execute($stmtTablaMensajes);
+    $stmtTablaMensajes = $conn->prepare($sqlMensajes);
+    $stmtTablaMensajes->bindParam(':sender_id', $userID);
+    $stmtTablaMensajes->bindParam(':receiver_id', $idAmigo);
+    $stmtTablaMensajes->bindParam(':sender_id', $idAmigo);
+    $stmtTablaMensajes->bindParam(':receiver_id', $userID);
 
-    $resultadoConsulta3 = mysqli_stmt_get_result($stmtTablaMensajes);
+    $stmtTablaMensajes->execute();
 
-    mysqli_stmt_close($stmtTablaMensajes);
+    $resultadoConsulta3 = $stmtTablaMensajes->fetchAll();
+    $stmtTablaMensajes->closeCursor();
 
     mysqli_close($conn);
 
-    if (mysqli_num_rows($resultadoConsulta3) == 0) {
+    if (empty($resultadoConsulta3)) {
       echo "<div class='d-flex flex-row justify-content-center'>
         <div>
           <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7;'>No tienes mensajes con esta persona.</p>
@@ -37,7 +38,7 @@ ORDER BY m.fecha_envio DESC";
       </div>";
     }
 
-    while ($fila = mysqli_fetch_assoc($resultadoConsulta3)) {
+    foreach ($resultadoConsulta3 as $fila) {
       $mensaje = $fila['contenido'];
       $senderId = $fila['sender_id'];
       $fechaEnvio = $fila['fecha_envio'];
@@ -62,9 +63,9 @@ ORDER BY m.fecha_envio DESC";
       }
     }
 
-  } catch (Exception $e) {
+  } catch (PDOException $e) {
     echo "Error in the database connection" . $e->getMessage();
-    mysqli_close($conn);
+    $conn = null;
     die();
   }
 }

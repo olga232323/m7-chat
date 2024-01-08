@@ -6,26 +6,27 @@ if (!isset($_SESSION['loginOk']) || !isset($_POST['enviarMensaje'])) {
 } else {
   include("./conexion.php");
   // SANEAR POST
-  $username = mysqli_real_escape_string($conn, $_SESSION['username']);
-  $userID = mysqli_real_escape_string($conn, $_SESSION['user_id']);
-  $idAmigo = mysqli_real_escape_string($conn, $_GET['idAmigo']);
-  $mensajeEscrito = mysqli_real_escape_string($conn, $_POST['mensaje']);
+  $username = $_SESSION['username'];
+  $userID = $_SESSION['user_id'];
+  $idAmigo = $_GET['idAmigo'];
+  $mensajeEscrito = $_POST['mensaje'];
   try {
     /* Insert para insertar en la base de datos el mensaje que enviamos */
     $sqlNuevoMensaje = "INSERT INTO Mensajes (sender_id, receiver_id, contenido, fecha_envio)
-    VALUES (?, ?, ?, NOW());";
-    $stmtTablaMensaje = mysqli_stmt_init($conn);
-    $stmtTablaMensaje = mysqli_prepare($conn, $sqlNuevoMensaje);
-    mysqli_stmt_bind_param($stmtTablaMensaje, "iis", $userID, $idAmigo, $mensajeEscrito);
-    mysqli_stmt_execute($stmtTablaMensaje);
+    VALUES (:sender_id, :receiver_id, :contenido, NOW());";
+    $stmtTablaMensaje = $conn->prepare($sqlNuevoMensaje);
+    $stmtTablaMensaje->bindParam(':sender_id', $userID);
+    $stmtTablaMensaje->bindParam(':receiver_id', $idAmigo);
+    $stmtTablaMensaje->bindParam(':contenido', $mensajeEscrito);
+    $stmtTablaMensaje->execute();
 
-    mysqli_stmt_close($stmtTablaMensaje);
-    mysqli_close($conn);
-    header('Location: ' . '../chat_index.php?idAmigo='. $idAmigo . '');
+    $stmtTablaMensaje->closeCursor();
+    $conn = null;
+    header('Location: ' . '../chat_index.php?idAmigo=' . $idAmigo . '');
 
-  } catch (Exception $e) {
+  } catch (PDOException $e) {
     echo "Error in the database connection" . $e->getMessage();
-    mysqli_close($conn);
+    $conn = null;
     die();
   }
 
