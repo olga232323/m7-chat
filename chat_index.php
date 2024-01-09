@@ -187,46 +187,10 @@ if (!isset($_SESSION['loginOk'])) {
                 <div class="row">
 
                   <h1 style="text-align: center;">Solicitudes de Amistad:</h1>
+                  <p id="resultado">dkhjfkdsj
+              </p>
 
-                  <?php
-                  include('./inc/conexion.php');
-                  $user_id = $_SESSION['user_id'];
-
-                  try {
-                    // Consulta para obtener las solicitudes de amistad pendientes
-                    $sql = "SELECT a.friendship_id, a.estado_solicitud, u.username AS username_user_id_2, u.user_id AS user_id_user_id_2 FROM amistades a INNER JOIN usuarios u ON a.user_id_2 = u.user_id WHERE a.user_id_1 = :user_id_1 AND a.estado_solicitud = 'pendiente'";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bindParam(':user_id_1', $user_id);
-                    $stmt->execute();
-                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                    if (count($result) == 0) {
-                      echo "<div class='d-flex flex-row justify-content-center align-items-center '>
-                <div>
-                  <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7;'>No tienes solicitudes de Amistad.</p>
-                </div>
-              </div>";
-                    } else {
-                      echo "<ol style='margin-left: 10%;'>";
-                      foreach ($result as $fila) {
-                        $amigo_username = $fila['username_user_id_2'];
-                        $friendship_id = $fila['friendship_id'];
-                        $amigo_id = $fila['user_id_user_id_2'];
-                        echo "<li>
-                    $amigo_username
-                    <a style='text-decoration: none; color: black;' onclick=Aceptar($friendship_id,$amigo_id)>✅</a>
-                    <a style='text-decoration: none; color: black;' onclick=Eliminar($friendship_id,$amigo_id)>❌</a>
-                </li>";
-                      }
-                      echo "</ol>";
-                    }
-                  } catch (PDOException $e) {
-                    echo "Error: " . $e->getMessage();
-
-                  }
-
-                  $stmt->closeCursor();
-                  ?>
+                  <!-- solicitudes php iba aqui-->
                 </div>
               </div>
             </div>
