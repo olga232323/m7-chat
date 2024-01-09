@@ -170,7 +170,7 @@ if (!isset($_SESSION['loginOk'])) {
     </section>
       <!-- Lista de  solicitudes -->
       <section>
-        <div class="container py-5">
+        <div class="container py-5" style="padding-top: 0!important">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card" id="chat3" style="border-radius: 15px;">
@@ -198,7 +198,7 @@ try {
                 </div>
               </div>";
     } else {
-        echo "<ol style='margin-left: 10%;'>";
+        echo "<ol style='padding: 2%; margin-left: 10%; overflow-y: scroll; overflow-x: auto; scrollbar-width: thin; width: 80%!important;max-height: 100px'>";
         foreach ($result as $fila) {
             $amigo_username = $fila['username_user_id_2'];
             $friendship_id = $fila['friendship_id'];
