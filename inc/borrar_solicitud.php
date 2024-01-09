@@ -37,7 +37,7 @@ if (isset($_GET['friendship_id']) && isset($_GET['amigo_id'])) {
                     $update_stmt->execute();
                     $update_stmt->closeCursor();
                     $conn = null;
-                    header('Location: ../solicitudes_amistad.php');
+                    header('Location: ../chat_index.php');
                     exit();
                 }
             }
