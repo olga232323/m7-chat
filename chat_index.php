@@ -124,8 +124,18 @@ if (!isset($_SESSION['loginOk'])) {
                                 <!-- Buscar el chat con el usuario seleccionado -->
                                 <?php
                                 // Recibimos el listado de amigos de listado_amigos.php
-                                include_once("./inc/listado_amigos.php");
+                                // include_once("./inc/listado_amigos.php");
                                 ?>
+                                <li class='p-2'>
+                                  <a class='d-flex justify-content-between text-decoration-none text-dark'
+                                    onclick='ListarMensajes(47)'>
+                                    <div class='d-flex flex-row'>
+                                      <div class='pt-1'>
+                                        <p class='fw-bold mb-0 text-center'>Olga Clemente</p>
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
                               </ul>
                             </div>
                             <?php
@@ -141,34 +151,18 @@ if (!isset($_SESSION['loginOk'])) {
                     <!-- Listado de mensajes -->
                     <div class="pt-3 pe-3" data-mdb-perfect-scrollbar="true"
                       style="position: relative; height: 400px; overflow: auto;">
-                      <?php
-                      // Recibimos el listado de mensajes de listado_mensajes.php
-                      if (!isset($_GET['idAmigo'])) {
-                        ?>
                         <div class='d-flex flex-row justify-content-center align-items-center '>
                           <div>
-                            <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7;'>Selecciona una
+                            <p id="infoCuboChat" class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7;'>Selecciona una
                               persona para chatear!</p>
                           </div>
                         </div>
-                        <?php
-                      } else {
-                        include_once("./inc/listado_mensajes.php");
-                      }
-                      ?>
+                        <p id="listaMensajes"></p>
+                        <!-- Aquí iba include listado_mensajes -->
                     </div>
                     <!-- Barra enviar mensaje -->
-                    <?php
-                    if (isset($_GET['idAmigo'])) {
-                      echo "<div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2'>
-                        <form method='POST' action='./inc/enviar_mensaje.php?idAmigo=" . $_GET['idAmigo'] . "' class='d-flex w-100'>
-                          <input type='text' name='mensaje' class='form-control flex-grow-1' id='mensaje'
-                            placeholder='Escriba un mensaje'>
-                          <input type='submit' name='enviarMensaje' value='Enviar' class='btn btn-secondary'>
-                        </form>
-                      </div>";
-                    }
-                    ?>
+                    <div id="barraMensaje"></div>
+                    <?php $userIDMensajes=(isset($_SESSION['user_id']))?$_SESSION['user_id']:''; ?>
                   </div>
                 </div>
               </div>
@@ -185,12 +179,12 @@ if (!isset($_SESSION['loginOk'])) {
             <div class="card" id="chat3" style="border-radius: 15px;">
               <div class="card-body">
                 <div class="row">
-
                   <h1 style="text-align: center;">Solicitudes de Amistad:</h1>
                   <p id="resultado">dkhjfkdsj
               </p>
-
                   <!-- solicitudes php iba aqui-->
+                  <h1 style="text-align: center;">Solicitudes de Amistad:</h1>
+                  
                 </div>
               </div>
             </div>
@@ -206,7 +200,10 @@ if (!isset($_SESSION['loginOk'])) {
     </form>
   </div>
   <script src="./js/solicitudes.js"></script>
-
+    <script type="text/javascript">
+    var userID='<?php echo $userIDMensajes;?>';
+    </script>
+  <script src="./js/mensajes.js"></script>
   </html>
   <?php
 }
