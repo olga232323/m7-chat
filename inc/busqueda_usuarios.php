@@ -1,8 +1,9 @@
 <?php
-include("./inc/conexion.php");
+include("conexion.php");
 
 // function buscarUsuarios($conn, $nombre)
 // // {
+    session_start();
     $userID = $_SESSION['user_id'];
     $parametro = '%a%';
 
@@ -10,7 +11,8 @@ include("./inc/conexion.php");
         // $consulta = "SELECT user_id, nombre_real FROM usuarios WHERE (username LIKE :parametro OR nombre_real LIKE :parametro) AND user_id <> :userID";
         // $consulta = "SELECT user_id, nombre_real FROM usuarios WHERE ((username LIKE '%a%'  OR nombre_real LIKE '%a%') AND user_id <> 36)";
         // <> is equal to not qual or !=
-        $stmt = $conn->prepare("SELECT user_id, nombre_real FROM usuarios WHERE (username LIKE :parametro OR nombre_real LIKE :parametro) AND user_id <> :userID");
+        $stmt = $conn->prepare("SELECT u.user_id, u.nombre_real, a.estado_solicitud FROM usuarios u LEFT JOIN amistades a ON (u.user_id = a.user_id_1) WHERE (u.username LIKE :parametro OR u.nombre_real LIKE :parametro) AND u.user_id <> :userID;");
+        // <> not equal !=
         $stmt->bindParam(':parametro', $parametro);
         $stmt->bindParam(':userID', $userID);
         $stmt->execute();

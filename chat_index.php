@@ -34,100 +34,31 @@ if (!isset($_SESSION['loginOk'])) {
                       <!-- Formulario de búsqueda en la misma página -->
                       <?php
                       include("./inc/conexion.php");
-                      include("./inc/busqueda_usuarios.php");
+                      // include("./inc/busqueda_usuarios.php");
 
                       $resultados = array();
 
-                      if (isset($_POST['buscar']) && $_POST['busqueda_realizada'] !== '') {
-                        $nombre = $_POST['busqueda_realizada'];
-                        $resultados = buscarUsuarios($conn, $nombre);
-                      }
 
                       ?>
-                      <form action="" method="POST" id="frmbusqueda">
                         <div class="input-group mb-3">
                           <input type="search" class="form-control rounded" name="busqueda_realizada" id="busqueda_realizada" placeholder="Búsqueda" aria-label="Búsqueda" aria-describedby="search-addon" />
 
                           <div class="input-group-append">
-                            <button class="btn btn-secondary" type="submit" name="buscar">Buscar</button>
                             <!-- <a class="btn btn-secondary" onclick="window.location.href='./solicitudes_amistad.php'">+</a> -->
-
+                           
                             <?php if (isset($_POST['buscar'])) { ?>
-                              <button class="btn btn-secondary" type="button" onclick="window.location.href='./chat_index.php'">
-                                &times;
-                              </button>
-                            <?php } ?>
-                          </div>
-                        </div>
-                      </form>
-                      <div>
-                        <!-- Resultados de búsqueda -->
-                        <div id="resultadosBusqueda" style="max-height: 400px; overflow-y: auto;">
-                          <?php
-                          if (!empty($resultados)) {
-                            echo "<h5>Resultados de la búsqueda:</h5>";
-                            echo "<ul style='list-style:none'>";
-                            foreach ($resultados as $resultado) {
-                              $nombreAmistad = $resultado['nombre_real'];
-                              $idAmistad = $resultado['user_id'];
-                              $usuarioActual = $_SESSION['user_id'];
-
-                              // Verificar si son amigos o si hay una solicitud pendiente
-                              if (!sonAmigos($conn, $usuarioActual, $idAmistad)) {
-                                echo "<li class='p-2'>
-                                <div class='d-flex flex-row'>
-                                  <div class='pt-1'>
-                                    <div class='row align-items-center'>
-                                      <div class='col-6 text-center'>
-                                        <p class='fw-bold text-left'>" . $nombreAmistad . "</p>
-                                      </div>
-                                      <div class='col-6 text-center'>
-                                        <a class='btn d-inline-flex text-right' href='./inc/enviar_solicitud.php?agregarAmigo&idAmigo=" . $idAmistad . "' style='background-color: white; border: none; margin-bottom: 50%;'>
-                                          ✅
-                                        </a>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                              ";
-                              } else {
-                                echo "<li class='p-2'>
-                                      <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='text-decoration-none text-dark d-flex justify-content-between'>
-                                          <div class='d-flex flex-row'>
-                                              <div class='pt-1'>
-                                                  <p class='fw-bold mb-0'>" . $nombreAmistad . "</p>
-                                              </div>
-                                          </div>
-                                      </a>
-                                  </li>";
-                              }
-                            }
-
-                            echo "</ul>";
-                          } elseif (isset($_POST['buscar']) && $_POST['busqueda_realizada'] !== '') {
-                            echo "<p>Usuario no encontrado</p>";
-                          } elseif (isset($_POST['buscar']) && $_POST['busqueda_realizada'] == '') {
-                            echo "<p>No has escrito nada.</p>";
-                          } elseif (!isset($_POST['buscar'])) { ?>
-                            <!-- Amistades -->
-                            <div data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
-                              <ul class="list-unstyled mb-0">
-                                <!-- Buscar el chat con el usuario seleccionado -->
-                                <?php
-                                // Recibimos el listado de amigos de listado_amigos.php
-                                include_once("./inc/listado_amigos.php");
-                                ?>
-                              </ul>
-                            </div>
+                              
                           <?php
                           }
                           ?>
                         </div>
+                         
                       </div>
-
+                      <div id="resultadosBusqueda"> 
+                     </div>
                     </div>
                   </div>
+                  
                   <!-- Chat general -->
                   <div class="col-md-6 col-lg-7 col-xl-8">
                     <!-- Listado de mensajes -->
