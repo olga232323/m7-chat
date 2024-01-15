@@ -44,7 +44,7 @@ if (!isset($_SESSION['loginOk'])) {
                       }
 
                       ?>
-                      <form action="chat_index.php" method="POST">
+                      <form action="" method="POST" id="frmbusqueda">
                         <div class="input-group mb-3">
                           <input type="search" class="form-control rounded" name="busqueda_realizada" id="busqueda_realizada" placeholder="Búsqueda" aria-label="Búsqueda" aria-describedby="search-addon" />
 
@@ -235,6 +235,8 @@ $stmt->closeCursor();
 
 
   </html>
+  <script src="./js/buscar.js"></script>
+
 <?php
 }
 ?>

@@ -64,7 +64,8 @@ try {
                     $amigo_username
                     <a style='text-decoration: none; color: black;' href='./inc/aceptar_solicitud.php?friendship_id=$friendship_id&amigo_id=$amigo_id'>✅</a>
                     <a style='text-decoration: none; color: black;' href='./inc/borrar_solicitud.php?friendship_id=$friendship_id&amigo_id=$amigo_id'>❌</a>
-                </li>";
+               <br>
+                    </li>";
         }
         echo "</ol>";
     }
