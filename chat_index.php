@@ -54,8 +54,15 @@ if (!isset($_SESSION['loginOk'])) {
                         </div>
                          
                       </div>
-                      <div id="resultadosBusqueda"> 
+                      <div id="resultadosBusqueda" style="
+    position: absolute;
+    background-color: white;
+    overflow-y: scroll;
+    max-height: 300px; width: 28%;
+"> 
                      </div>
+                     <div id="listarAmigos">
+                      </div>
                     </div>
                   </div>
                   
@@ -167,6 +174,7 @@ $stmt->closeCursor();
 
   </html>
   <script src="./js/buscar.js"></script>
+  <script src="./js/amigos.js"></script>
 
 <?php
 }
