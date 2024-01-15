@@ -8,16 +8,14 @@ try {
   $stmt = $conn->prepare($sql);
   $stmt->bindParam(':user_id_1', $user_id);
   $stmt->execute();
-  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-  if (count($result) == 0) {
-    echo "empty"; 
+  if (count($resultado) == 0) {
+    echo 'empty'; 
   } else {
-    echo json_encode($result);
+    echo json_encode($resultado);
   }
 } catch (PDOException $e) {
   echo json_encode( array( 'error' => $ex->getMessage() ) );
 }
-
-$stmt->closeCursor();
 ?>
