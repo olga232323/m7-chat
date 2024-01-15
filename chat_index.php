@@ -35,44 +35,51 @@ if (!isset($_SESSION['loginOk'])) {
                   <div class="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
 
                     <div class="p-3">
-                      <!-- Barra de búsqueda --><!-- Barra de búsqueda -->
+                      <!-- Barra de búsqueda -->
                       <!-- Formulario de búsqueda en la misma página -->
                       <?php
                       include("./inc/conexion.php");
-                      // include("./inc/busqueda_usuarios.php");
-
-                      $resultados = array();
-
-
                       ?>
-                        <div class="input-group mb-3">
-                          <input type="search" class="form-control rounded" name="busqueda_realizada"
-                            id="busqueda_realizada" placeholder="Búsqueda" aria-label="Búsqueda"
-                            aria-describedby="search-addon" />
+                      <div class="input-group mb-3">
+                        <input type="search" class="form-control rounded" name="busqueda_realizada"
+                          id="busqueda_realizada" placeholder="Búsqueda" aria-label="Búsqueda"
+                          aria-describedby="search-addon" />
 
-                          <div class="input-group-append">
-                      <div id="resultadosBusqueda"> 
-                     </div>
+                        <div class="input-group-append">
+                          <div id="resultadosBusqueda">
+                          </div>
+                        </div>
+                      </div>
+                      <div data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
+                        <ul class="list-unstyled mb-0">
+                          <!-- Buscar el chat con el usuario seleccionado -->
+                          <?php
+                          // Recibimos el listado de amigos de listado_amigos.php
+                          include_once("./inc/listado_amigos.php");
+                          ?>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                  
+
                   <!-- Chat general -->
                   <div class="col-md-6 col-lg-7 col-xl-8">
                     <!-- Listado de mensajes -->
                     <div class="pt-3 pe-3" data-mdb-perfect-scrollbar="true"
                       style="position: relative; height: 400px; overflow: auto;">
-                        <div class='d-flex flex-row justify-content-center align-items-center '>
-                          <div>
-                            <p id="infoCuboChat" class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7;'>Selecciona una
-                              persona para chatear!</p>
-                          </div>
+                      <div class='d-flex flex-row justify-content-center align-items-center '>
+                        <div>
+                          <p id="infoCuboChat" class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7;'>
+                            Selecciona una
+                            persona para chatear!</p>
                         </div>
-                        <p id="listaMensajes"></p>
-                        <!-- Aquí iba include listado_mensajes -->
+                      </div>
+                      <p id="listaMensajes"></p>
+                      <!-- Aquí iba include listado_mensajes -->
                     </div>
                     <!-- Barra enviar mensaje -->
                     <div id="barraMensaje"></div>
-                    <?php $userIDMensajes=(isset($_SESSION['user_id']))?$_SESSION['user_id']:''; ?>
+                    <?php $userIDMensajes = (isset($_SESSION['user_id'])) ? $_SESSION['user_id'] : ''; ?>
                   </div>
                 </div>
               </div>
@@ -92,7 +99,6 @@ if (!isset($_SESSION['loginOk'])) {
                   <h1 style="text-align: center;">Solicitudes de Amistad:</h1>
                   <p id="resultado"></p>
                   <!-- solicitudes php iba aqui-->
-                  <h1 style="text-align: center;">Solicitudes de Amistad:</h1>
                 </div>
               </div>
             </div>
@@ -108,10 +114,13 @@ if (!isset($_SESSION['loginOk'])) {
     </form>
   </div>
   <script src="./js/solicitudes.js"></script>
-    <script type="text/javascript">
-    var userID='<?php echo $userIDMensajes;?>';
-    </script>
+  <script type="text/javascript">
+    var userID = '<?php echo $userIDMensajes; ?>';
+  </script>
   <script src="./js/mensajes.js"></script>
-    <script src="./js/buscar.js"></script>
+  <script src="./js/buscar.js"></script>
+
   </html>
+  <?php
+}
 ?>
