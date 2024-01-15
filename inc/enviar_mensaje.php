@@ -1,14 +1,14 @@
 <?php
 session_start();
-if (!isset($_SESSION['loginOk']) || !isset($_POST['enviarMensaje'])) {
-  header('Location: ' . './cerrar_sesion.php');
-  exit();
-} else {
+// if (!isset($_SESSION['loginOk']) || !isset($_POST['enviarMensaje'])) {
+//   header('Location: ' . './cerrar_sesion.php');
+//   exit();
+// } else {
   include("./conexion.php");
   // SANEAR POST
   $username = $_SESSION['username'];
   $userID = $_SESSION['user_id'];
-  $idAmigo = $_GET['idAmigo'];
+  $idAmigo = $_POST['idAmigo'];
   $mensajeEscrito = $_POST['mensaje'];
   try {
     /* Insert para insertar en la base de datos el mensaje que enviamos */
@@ -22,7 +22,7 @@ if (!isset($_SESSION['loginOk']) || !isset($_POST['enviarMensaje'])) {
 
     $stmtTablaMensaje->closeCursor();
     $conn = null;
-    header('Location: ' . '../chat_index.php?idAmigo=' . $idAmigo . '');
+    echo 'ok';
 
   } catch (PDOException $e) {
     echo "Error in the database connection" . $e->getMessage();
@@ -30,5 +30,5 @@ if (!isset($_SESSION['loginOk']) || !isset($_POST['enviarMensaje'])) {
     die();
   }
 
-}
+// }
 ?>
