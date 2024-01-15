@@ -1,17 +1,21 @@
-// Sweet alert para aceptar/eliminar solicitudes de amistad.
+// Sweet alert para aceptar/eliminar/enviar solicitudes de amistad.
 var http_request_solicitudes = new XMLHttpRequest();
 var http_request = new XMLHttpRequest();
+var http_request_crear_solicitud = new XMLHttpRequest();
 var ajax = new XMLHttpRequest();
 var READY_STATE_COMPLETE = 4;
 
-var intervalo = setInterval(function () {
-  //call $.ajax here
-}, 30000);
 window.onload = function () { // Cuando cargue la pagina 
+  RefrescarSolicitudes();
+}
+
+function RefrescarSolicitudes() {
   http_request_solicitudes.open('POST', './inc/listar_solicitudes.php');
   http_request_solicitudes.onreadystatechange = ListarSolicitudes;
   http_request_solicitudes.send(null);
 }
+
+// Aceptar solicitud
 function Aceptar(friend_id, amigo_id) {
   var formData = new FormData();
   formData.append('friend_id', friend_id);
@@ -28,6 +32,7 @@ function Aceptar(friend_id, amigo_id) {
         showConfirmButton: false,
         timer: 1500
       });
+      RefrescarSolicitudes();
     } else {
       // Mensaje error solicitud no aceptada
       Swal.fire({
@@ -41,6 +46,8 @@ function Aceptar(friend_id, amigo_id) {
   }
   http_request.send(formData);
 }
+
+// Eliminar solicitud
 function Eliminar(friend_id, amigo_id) {
   Swal.fire({
     title: 'Eliminar solicitud?',
@@ -66,7 +73,7 @@ function Eliminar(friend_id, amigo_id) {
             showConfirmButton: false,
             timer: 1500
           });
-
+          RefrescarSolicitudes();
         } else {
           // Mensaje error solicitud no eliminada
           Swal.fire({
@@ -82,6 +89,8 @@ function Eliminar(friend_id, amigo_id) {
     }
   });
 }
+
+// Lista solicitudes usuario
 function ListarSolicitudes() {
   var resultado = document.getElementById('resultado');
   var str = "";
@@ -102,4 +111,36 @@ function ListarSolicitudes() {
   } else {
     resultado.innerText = "Error";
   }
+}
+
+function EnviarSolicitud(user_id) {
+  var agregarAmigo = 'agregarAmigo';
+  var formDataSolicitud = new FormData();
+  formDataSolicitud.append('idAmigo', user_id);
+  formDataSolicitud.append('agregarAmigo', agregarAmigo);
+
+  // Abre una conexión con el servidor para enviar la solicitud
+  http_request_crear_solicitud.open('POST', './inc/enviar_solicitud.php');
+
+  http_request_crear_solicitud.onreadystatechange = function () {
+    if (http_request_crear_solicitud.readyState == READY_STATE_COMPLETE && http_request_crear_solicitud.status == 200 && http_request_crear_solicitud.responseText == 'ok') {
+      Swal.fire({
+        title: 'Solicitud enviada!',
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      RefrescarSolicitudes();
+    } else {
+      // Mensaje error solicitud no enviada
+      Swal.fire({
+        icon: 'error',
+        title: 'Algo ha salido mal',
+        text: 'Solicitud no enviada, inténtelo de nuevo más tarde..',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  }
+  http_request_crear_solicitud.send(formDataSolicitud);
 }

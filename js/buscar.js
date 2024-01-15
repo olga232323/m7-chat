@@ -37,7 +37,7 @@ function buscarUsuarios(valor) {
                     tabla += "</div>"
                 } else {
                     tabla += "<div class='col-6 text-center'>"
-                    tabla += "<a class='btn d-inline-flex text-right' href='./inc/enviar_solicitud.php?agregarAmigo&idAmigo=" + item.user_id + "' style='background-color: white; border: none; margin-bottom: 50%;'>✅</a>"
+                    tabla += "<a class='btn d-inline-flex text-right' style='background-color: white; border: none; margin-bottom: 50%;' onclick='EnviarSolicitud(" + item.user_id + ")'>✅</a>"
                     tabla += "</div>"
                 }
                 tabla += "</div> </div> </div>"
