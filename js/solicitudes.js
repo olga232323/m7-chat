@@ -173,14 +173,20 @@ function EnviarSolicitud(user_id) {
     http_request_crear_solicitud.open('POST', './inc/enviar_solicitud.php');
 
     http_request_crear_solicitud.onreadystatechange = function() {
-        if (http_request_crear_solicitud.readyState == READY_STATE_COMPLETE && http_request_crear_solicitud.status == 200 && http_request_crear_solicitud.responseText == 'ok') {
-            Swal.fire({
-                title: 'Solicitud enviada!',
-                icon: "success",
-                showConfirmButton: false,
-                timer: 1500
-            });
-            RefrescarSolicitudes();
+        if (http_request_crear_solicitud.readyState == READY_STATE_COMPLETE) {
+            console.log('readystateok');
+            if (http_request_crear_solicitud.status == 200 && http_request_crear_solicitud.responseText == 'ok') {
+                console.log('readystateok2');
+
+                Swal.fire({
+                    title: 'Solicitud enviada!',
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                RefrescarSolicitudes();
+            }
+
         } else {
             // Mensaje error solicitud no enviada
             Swal.fire({
