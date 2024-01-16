@@ -1,0 +1,1 @@
+<!-- Preguntar si hay que hacer variables de session -->
