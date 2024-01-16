@@ -1,10 +1,7 @@
 <?php
-if (!isset($_SESSION['loginOk'])) {
-  header('Location: ' . './inc/cerrar_sesion.php');
-  exit();
-} else {
-  include("./inc/conexion.php");
 
+  include("conexion.php");
+session_start();
   $username = $_SESSION['username'];
   $userID = $_SESSION['user_id'];
   try {
@@ -15,41 +12,42 @@ if (!isset($_SESSION['loginOk'])) {
     $stmtTablaAmistades->bindParam(':userID', $userID);
     $stmtTablaAmistades->execute();
 
-    $resultadoConsulta = $stmtTablaAmistades->fetchAll();
+    $resultadoConsulta = $stmtTablaAmistades->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($resultadoConsulta);
     $stmtTablaAmistades->closeCursor();
 
     $conn = null;
 
-    if (count($resultadoConsulta) == 0) {
-      echo "<li class='p-2'>
-        <div class='d-flex flex-row'>
-          <div class='pt-1'>
-            <p class='fw-bold mb-0'>No tienes amigos agregados</p>
-          </div>
-        </div>
-      </li>";
-    } else {
-      echo "<h5>Tus Amigos:</h5>";
-      foreach ($resultadoConsulta as $fila) {
-        $nombreAmistad = $fila['nombre_real'];
-        $idAmistad = $fila['user_id'];
-        echo "<li class='p-2'>
-          <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='d-flex justify-content-between text-decoration-none text-dark'>
-            <div class='d-flex flex-row'>
-              <div class='pt-1'>
-                <p class='fw-bold mb-0 text-center'>" . $nombreAmistad . "</p>
-              </div>
-            </div>
-          </a>
-        </li>
-        ";
-      }
-    }
+    // if (count($resultadoConsulta) == 0) {
+    //   echo "<li class='p-2'>
+    //     <div class='d-flex flex-row'>
+    //       <div class='pt-1'>
+    //         <p class='fw-bold mb-0'>No tienes amigos agregados</p>
+    //       </div>
+    //     </div>
+    //   </li>";
+    // } else {
+    //   echo "<h5>Tus Amigos:</h5>";
+    //   foreach ($resultadoConsulta as $fila) {
+    //     $nombreAmistad = $fila['nombre_real'];
+    //     $idAmistad = $fila['user_id'];
+    //     echo "<li class='p-2'>
+    //       <a href='./chat_index.php?idAmigo=" . $idAmistad . "' class='d-flex justify-content-between text-decoration-none text-dark'>
+    //         <div class='d-flex flex-row'>
+    //           <div class='pt-1'>
+    //             <p class='fw-bold mb-0 text-center'>" . $nombreAmistad . "</p>
+    //           </div>
+    //         </div>
+    //       </a>
+    //     </li>
+    //     ";
+    //   }
+    // }
 
   } catch (PDOException $e) {
     echo "Error in the database connection" . $e->getMessage();
     $conn = null;
     die();
   }
-}
+
 ?>

@@ -5,7 +5,7 @@ include("conexion.php");
 // // {
     session_start();
     $userID = $_SESSION['user_id'];
-    $parametro = '%a%';
+    $parametro = "%".$_POST['busqueda_realizada'] ."%";
 
     try {
         // $consulta = "SELECT user_id, nombre_real FROM usuarios WHERE (username LIKE :parametro OR nombre_real LIKE :parametro) AND user_id <> :userID";
