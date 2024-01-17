@@ -84,6 +84,7 @@ if (!isset($_SESSION['loginOk'])) {
                     </div>
                     <!-- Barra enviar mensaje -->
                     <div id="barraMensaje"></div>
+                    <input type="hidden" id="user_id" value="<?php echo $_SESSION['user_id']?>">
                     <?php $userIDMensajes = (isset($_SESSION['user_id'])) ? $_SESSION['user_id'] : ''; ?>
                   </div>
                 </div>

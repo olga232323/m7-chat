@@ -2,6 +2,7 @@ var READY_STATE_COMPLETE = 4;
 var ajax = new XMLHttpRequest();
 var resultado = document.getElementById('resultadosBusqueda');
 var busqueda_realizada = document.getElementById("busqueda_realizada");
+var userid = document.getElementById("user_id").value;
 busqueda_realizada.addEventListener("keyup", () => {
     const valor = busqueda_realizada.value;
     var resultadosBusqueda = document.getElementById('resultadosBusqueda');
@@ -43,7 +44,7 @@ function respuestaServer() {
                 var tabla = '<h5>Resultados de la búsqueda:</h5><ul style="list-style:none;">';
                 json.forEach(function(item) {
 
-                    if (item.estado_solicitud == 'aceptada') {
+                    if (item.estado_solicitud == 'aceptada' && item.user_id == userid) {
                         tabla += "<li class='p-2'>"
                         tabla += "<div class='flex-row'>"
                         tabla += "<div class='pt-1'>"
