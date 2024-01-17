@@ -44,7 +44,7 @@ function respuestaServer() {
                 var tabla = '<h5>Resultados de la búsqueda:</h5><ul style="list-style:none;">';
                 json.forEach(function(item) {
 
-                    if (item.estado_solicitud == 'aceptada' && item.user_id == userid) {
+                    if (item.estado_solicitud == 'aceptada' || item.user_id == userid) {
                         tabla += "<li class='p-2'>"
                         tabla += "<div class='flex-row'>"
                         tabla += "<div class='pt-1'>"

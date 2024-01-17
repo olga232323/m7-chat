@@ -144,6 +144,7 @@ function Eliminar(friend_id, amigo_id) {
                         showConfirmButton: false,
                         timer: 1500
                     });
+                    console.log('')
                     RefrescarSolicitudes();
                     ListarUsuarios();
                 } else {
