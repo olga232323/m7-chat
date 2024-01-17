@@ -36,10 +36,10 @@ function respuestaServer() {
     if (ajax.readyState == READY_STATE_COMPLETE) {
         if (ajax.status == 200) {
             console.log('ok');
-            console.log(ajax.responseText);
+            // console.log(ajax.responseText);
             try {
                 var json = JSON.parse(ajax.responseText);
-                console.log(ajax.responseText);
+                // console.log(ajax.responseText);
 
                 var tabla = '<h5>Resultados de la búsqueda:</h5><ul style="list-style:none;">';
                 json.forEach(function(item) {
