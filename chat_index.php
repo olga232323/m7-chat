@@ -53,10 +53,16 @@ if (!isset($_SESSION['loginOk'])) {
                       <div data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
                         <ul class="list-unstyled mb-0">
                           <!-- Buscar el chat con el usuario seleccionado -->
-                          <?php
-                          // Recibimos el listado de amigos de listado_amigos.php
-                          include_once("./inc/listado_amigos.php");
-                          ?>
+                          <li class='p-2'>
+                            <a class='d-flex justify-content-between text-decoration-none text-dark'
+                              onclick='ListarMensajes(47)'>
+                              <div class='d-flex flex-row'>
+                                <div class='pt-1'>
+                                  <p class='fw-bold mb-0 text-center'>Olga Clemente</p>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
                         </ul>
                       </div>
                     </div>
