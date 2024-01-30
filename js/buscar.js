@@ -45,6 +45,7 @@ function respuestaServer() {
                 json.forEach(function(item) {
 
                     if (item.estado_solicitud == 'aceptada' && item.user_id == userid) {
+                        console.log(item.estado_solicitud)
                         tabla += "<li class='p-2'>"
                         tabla += "<div class='flex-row'>"
                         tabla += "<div class='pt-1'>"
@@ -54,6 +55,7 @@ function respuestaServer() {
                         tabla += "</div> </div> </div>"
                         tabla += "</li>"
                     } else {
+                        console.log(item.estado_solicitud)
 
                         tabla += "<li class='p-2'>"
                         tabla += "<div class='d-flex flex-row'>"
